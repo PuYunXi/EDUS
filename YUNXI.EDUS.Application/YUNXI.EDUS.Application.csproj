@@ -211,6 +211,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConsts.cs" />
+    <Compile Include="Dto\DatatablesColumnsInputDto.cs" />
+    <Compile Include="Dto\DatatablesColumnsSearch.cs" />
+    <Compile Include="Dto\DatatablesPagedInputDto.cs" />
+    <Compile Include="Dto\DatatablesPagedResultOutput.cs" />
+    <Compile Include="Dto\DatatablesSearchInputDto.cs" />
+    <Compile Include="Dto\DatatablesSortedInputDto.cs" />
+    <Compile Include="Dto\FileDto.cs" />
+    <Compile Include="Dto\IDatatablesPagedResultRequest.cs" />
+    <Compile Include="Dto\IDrawCounter.cs" />
+    <Compile Include="Dto\PagedAndFilteredInputDto.cs" />
+    <Compile Include="Dto\PagedAndSortedInputDto.cs" />
+    <Compile Include="Dto\PagedInputDto.cs" />
+    <Compile Include="Dto\PagedSortedAndFilteredInputDto.cs" />
     <Compile Include="EDUSApplicationModule.cs" />
     <Compile Include="EDUSAppServiceBase.cs" />
     <Compile Include="Authorization\Accounts\AccountAppService.cs" />
