@@ -1,0 +1,7 @@
+﻿.dropdown-submenu >  .dropdown-menu {
+    top: 0;
+    left: auto;
+    margin-left: 0;
+    margin-right: -1px;
+    right: 100%;
+}

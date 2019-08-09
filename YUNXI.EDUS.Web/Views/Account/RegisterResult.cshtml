@@ -1,19 +1,100 @@
-﻿@model YUNXI.EDUS.Web.Models.Account.RegisterResultViewModel
+﻿@model WIMI.BTL.Web.Models.Account.RegisterResultViewModel
 @{
-    ViewBag.Title = "Successfully registered";
+    ViewBag.Title = "title";
 }
-<h4>Successfully registered</h4>
-<ul>
-    <li><span class="text-muted">@L("NameSurname"):</span> @Model.NameAndSurname</li>
-    <li><span class="text-muted">@L("TenancyName"):</span> @Model.TenancyName</li>
-    <li><span class="text-muted">@L("UserName"):</span> @Model.UserName</li>
-    <li><span class="text-muted">@L("EmailAddress"):</span> @Model.EmailAddress</li>
-</ul>
-<div>
-    @if (!Model.IsActive)
-    {
-        <div class="alert alert-warning" role="alert">
-            @L("WaitingForActivationMessage")
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+
+        <div class="login-logo" id="app-name"></div>
+
+        <div class="register-box-body">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div align="center">
+                        <span id="time">5</span>@L("ReturnToLoginPageTime")<br>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="alert alert-success">
+                        <h4>@L("SuccessfullyRegistered").</h4>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="form-group">
+
+                        <label class="control-label">@L("NameSurname"):</label>
+
+                        <label class="control-label">@Model.NameAndSurname</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="control-label">@L("TenancyName"):</label>
+
+                        <label class="control-label">@Model.TenancyName</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="control-label">@L("UserName"):</label>
+
+                        <label class="control-label">@Model.UserName</label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="control-label">@L("EmailAddress"):</label>
+
+                        <label class="control-label">@Model.EmailAddress</label>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div>
+
+                        @if (Model.IsEmailConfirmationRequired)
+                        {
+                            <div class="alert alert-warning" role="alert">
+
+                                @L("ConfirmationMailSentPleaseClickLinkInTheEmail", Model.EmailAddress)
+                            </div>
+                        }
+                        @if (!Model.IsActive)
+                        {
+                            <div class="alert alert-warning" role="alert">
+
+                                @L("YourAccountIsWaitingToBeActivatedByAdmin")
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
-    }
+    </div>
+
 </div>
+
+<script>
+    function countDown(secs, surl) {
+        var jumpTo = document.getElementById('time');
+        jumpTo.innerHTML = secs;
+        if (--secs > 0) {
+            setTimeout("countDown(" + secs + ",'" + surl + "')", 1000);
+        } else {
+            location.href = surl;
+        }
+    }
+
+    countDown(5, 'Login');
+</script>

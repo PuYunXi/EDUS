@@ -1,53 +1,141 @@
-﻿@using Abp.Web.Mvc.Extensions
-@model YUNXI.EDUS.Web.Models.Account.LoginFormViewModel
-@section Styles
-{
-    @Html.IncludeStyle("~/Views/Account/Login.css")
-}
+﻿@using Abp.Extensions
+@using Abp.MultiTenancy
+@using Abp.Web.Mvc.Extensions
+@model WIMI.BTL.Web.Models.Account.LoginFormViewModel
+
 @section Scripts
 {
     @Html.IncludeScript("~/Views/Account/Login.js")
 }
 
-<div class="card">
-    <div class="body">
-        <form id="LoginForm" method="POST" asp-action="Login">
-            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-            <input type="hidden" name="returnUrlHash" />
-            <h4 class="text-center">@L("LogIn")</h4>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">person</i>
-                </span>
-                <div class="form-line">
-                    <input type="text" class="form-control" name="UsernameOrEmailAddress" placeholder="@L("UserNameOrEmail")" required autofocus maxlength="100">
-                </div>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="material-icons">lock</i>
-                </span>
-                <div class="form-line">
-                    <input type="password" class="form-control" name="Password" placeholder="@L("Password")" required maxlength="100">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-8 p-t-5">
-                    <input type="checkbox" name="RememberMe" id="rememberme" class="filled-in chk-col-pink" value="true">
-                    <label for="rememberme">@L("RememberMe")</label>
-                </div>
-                <div class="col-xs-4">
-                    <button id="LoginButton" class="btn btn-block bg-pink waves-effect" type="submit">@L("LogIn")</button>
-                </div>
-            </div>
-            @if (Model.IsSelfRegistrationAllowed)
-            {
-                <div class="row m-t-15 m-b--20">
-                    <div class="col-xs-12">
-                        <a href="@Url.Action("Register", "Account")">@L("Register")</a>
-                    </div>
-                </div>
-            }
-        </form>
+
+@if (!Model.SuccessMessage.IsNullOrEmpty())
+{
+    <div class="alert alert-success">
+
+        <button class="close" data-close="alert"></button>
+
+        <span>
+            @Model.SuccessMessage
+        </span>
     </div>
+}
+<div class="login-box">
+
+    <div class="login-logo" id="app-name"></div>
+
+    <div class="login-box-body">
+
+        <h4 class="login-box-msg text-center">@L("LogIn")</h4>
+
+        <form class="login-form" action="@Url.Action("Login")?returnUrl=@ViewBag.ReturnUrl" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div class="alert alert-danger" style="display: none;">
+
+                <button class="close" data-close="alert"></button>
+
+                <span>
+                    <i class="fa fa-warning"></i> @L("PleaseEnterLoginInformation")
+                </span>
+            </div>
+
+
+            <input type="hidden" name="returnUrlHash" />
+
+            @if (ViewBag.IsMultiTenancyEnabled)
+            {
+                if (Model.TenancyName.IsNullOrEmpty())
+                {
+                    <div class="form-group">
+
+                        <input class="form-control" type="text" placeholder="@L("TenancyName")" name="tenancyName" maxlength="@AbpTenantBase.MaxTenancyNameLength" />
+
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" name="tenancyName" value="@Model.TenancyName" />
+                }
+            }
+            <div class="form-group has-feedback">
+
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+
+                <input class="form-control" type="text" autocomplete="off" placeholder="@L("UserNameOrEmail")" name="usernameOrEmailAddress" value="@(Model.UserNameOrEmailAddress ?? string.Empty)" required />
+
+                <span class="fa fa-user form-control-feedback"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+
+                <input class="form-control" type="password" autocomplete="off" placeholder="@L("Password")" name="password" />
+
+                <span class="fa fa-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+
+
+                @if (Model.LanguageViewModel.AllLanguages.Count > 1)
+                {
+                    <div class="language-switch-area">
+
+                        @foreach (var languageInfo in Model.LanguageViewModel.AllLanguages)
+                        {
+                            <a href="~/AbpLocalization/ChangeCulture?cultureName=@(languageInfo.Name)&returnUrl=@Request.Url">
+
+                                <span class="language-icon @(languageInfo == Model.LanguageViewModel.CurrentLanguage ? "language-icon-current" : string.Empty)" title="@languageInfo.DisplayName"><i class="@languageInfo.Icon"></i></span>
+                            </a>
+                        }
+                    </div>
+                }
+              
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-8">
+
+                    <div class="rememberme checkbox">
+
+                        <label>
+
+                            <input type="checkbox" name="rememberMe" value="true"> @L("RememberMe")
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <!-- /.col -->
+
+                <div class="col-xs-4">
+
+                    <button type="submit" class="btn btn-primary btn-block btn-flat uppercase">@L("LogIn")</button>
+
+                </div>
+
+                <!-- /.col -->
+
+            </div>
+
+        </form>
+
+
+        <br />
+
+        @if (Model.IsSelfRegistrationEnabled)
+        {
+            <a href="@Url.Action("Register", "Account")" id="register-btn" class="uppercase">@L("CreateAnAccount")</a>
+            <br>
+        }
+
+
+        <a href="@Url.Action("ForgotPassword", "Account")" id="forget-password" class="forget-password">@L("ForgotPassword")</a><br>
+
+        <a href="@Url.Action("EmailActivation", "Account")" id="email-activation-btn" class="uppercase">@L("EmailActivation")</a>
+
+    </div>
+
 </div>

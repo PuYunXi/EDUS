@@ -1,71 +1,137 @@
-﻿@using System.Threading
-@using System.Web.Optimization
+﻿@using System.Web.Optimization
 @using Abp.Timing
-@using YUNXI.EDUS
-@using YUNXI.EDUS.Web.Helpers
+@using Abp.Web.Mvc.Extensions
+@using WIMI.BTL
+@using WIMI.BTL.Web.Bundling
 @{
-    SetAntiForgeryCookie();
+    Layout = null;
 }
 <!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+
+<!--[if !IE]><!-->
+
 <html lang="en">
+
+<!--<![endif]-->
+
 <head>
-    <meta charset="utf-8">
+
+    <meta charset="utf-8" />
+
+    <title>@BtlVersionHelper.AppName</title>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <link rel="shortcut icon" href="~/favicon.ico">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>EDUS</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-    @Styles.Render("~/Bundles/account-vendor/css")
 
-    <!-- View specific styles -->
-    @RenderSection("styles", required: false)
+    @* Fill these meta tags upon your project specification *@
+    <meta content="WIMI BTL" name="description" />
+
+    <meta content="WIMI BTL" name="keywords">
+
+    <meta content="WIMI BTL" name="author" />
+
+
+    <link rel="shortcut icon" href="~/favicon.ico" />
+
+
+    @Html.IncludeScript(ScriptPaths.JQuery2)
+
+
+    @Styles.Render("~/Content/css/bundle")
+
+
+    @Html.IncludeStyle("~/Views/Account/_Layout.css")
+
+    @RenderSection("Styles", false)
+
 
     <script type="text/javascript">
-        //This is used to get the application's root path from javascript. It's useful if you're running application in a virtual directory under IIS.
-        var abp = abp || {}; abp.appPath = '@ApplicationPath';
+        @* This is used to get the application's root path from javascript.
+        It's useful if you're running application in a virtual directory under IIS. *@
+        var abp = abp || {};
+        abp.appPath = '@ApplicationPath';
     </script>
+
 
 </head>
-<body class="login-page">
-    <div class="login-box">
-        <div class="logo">
-            <a href="javascript:void(0);">EDUS</a>
-        </div>
 
-        @if (ViewBag.IsMultiTenancyEnabled)
-        {
-            @Html.Action("TenantChange", "Account")
+<body class="hold-transition login-page">
+
+<div class="menu-toggler sidebar-toggler">
+
+</div>
+
+<div class="content">
+   
+    @RenderBody()
+</div>
+
+<div class="copyright text-center">
+
+    <strong>Copyright &copy; 2017-2018 @L("FootTagWimi").</strong> All rights reserved.
+
+</div>
+
+
+<!--[if lt IE 9]>
+
+    <script src="~/Scripts/others/respond.min.js"></script>
+
+    <script src="~/Scripts/others/excanvas.min.js"></script>
+
+<![endif]-->
+@* *@
+@Html.IncludeScript(ScriptPaths.Json2)
+@Html.IncludeScript(ScriptPaths.Bootstrap)
+@Html.IncludeScript(ScriptPaths.JQueryBlockUi)
+@Html.IncludeScript(ScriptPaths.JQueryCookie)
+@Html.IncludeScript(ScriptPaths.Toastr)
+@Html.IncludeScript(ScriptPaths.SpinJs)
+@Html.IncludeScript(ScriptPaths.SpinJsJQuery)
+@Html.IncludeScript(ScriptPaths.SweetAlert)
+@Html.IncludeScript(ScriptPaths.MomentJs)
+@Html.IncludeScript(ScriptPaths.JQueryValidation)
+@Html.IncludeScript(ScriptPaths.JQueryValidationLocalization)
+@Html.IncludeScript(ScriptPaths.AppConsts)
+
+
+
+@Scripts.Render("~/Bundles/Foundation/js")
+@Scripts.Render("~/Bundles/AbpStaff/js")
+@Html.IncludeScript(ScriptPaths.JQueryValidationLocalization)
+@Html.IncludeScript("~/Views/Account/_Layout.js")
+
+
+<script type="text/javascript">
+    abp.localization.defaultSourceName = '@LocalizationSourceName';
+</script>
+
+<!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+
+<script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
+
+
+@RenderSection("Scripts", false)
+
+
+<script>
+    jQuery(document).ready(function () {
+        AccountLayout.init();
+
+        if (CurrentPage) {
+            CurrentPage.init();
         }
+    });
+</script>
 
-        @RenderBody()
-
-        @Html.Action("_AccountLanguages", "Account")
-
-        <div class="row">
-            <div class="col-xs-12 text-center" style="color: #e9e9e9">
-                <small>&copy; @DateTime.Now.Year EDUS. <b>Version </b> @AppVersionHelper.Version [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]</small>
-            </div>
-        </div>
-
-    </div>
-
-    @Scripts.Render("~/Bundles/account-vendor/js/bottom")
-
-    <script>
-        //Localizing momentjs
-        moment.locale('@Thread.CurrentThread.CurrentUICulture.Name');
-    </script>
-
-    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
-    <script src="~/api/AbpServiceProxies/GetAll?v=@(Clock.Now.Ticks)"></script>
-    <script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
-
-    <!-- View specific scripts -->
-    @RenderSection("scripts", required: false)
-    @Html.PartialViewScripts()
 </body>
+
 </html>

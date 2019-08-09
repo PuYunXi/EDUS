@@ -6,6 +6,9 @@ namespace YUNXI.EDUS.Web.Models.Account
         
         public string UserName { get; set; }
 
+        public bool IsEmailConfirmationRequired { get; set; }
+
+
         public string EmailAddress { get; set; }
         
         public string NameAndSurname { get; set; }

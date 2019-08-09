@@ -1,70 +1,145 @@
 ﻿@using Abp.Authorization.Users
-@model YUNXI.EDUS.Web.Models.Account.RegisterViewModel
-@section Styles
+@using Abp.Extensions
+@using Abp.MultiTenancy
+@using Abp.Web.Mvc.Extensions
+@using CaptchaMvc.HtmlHelpers
+@model WIMI.BTL.Web.Models.Account.RegisterViewModel
+@section Scripts
 {
-    <link href="~/Views/Account/Login.css" rel="stylesheet" />
+    @Html.IncludeScript("~/Views/Account/Register.js")
 }
-@section Scripts{
-    <script type="text/javascript" src="~/Views/Account/Register.js"></script>
-}
-<div class="card">
-    <div class="body">
-        <form id="RegisterForm" asp-action="Register" method="POST">
-            <h4 class="text-center">@L("Register")</h4>
-            
-            @Html.AntiForgeryToken()
+<div class="row">
 
-            @if (@ViewBag.ErrorMessage != null)
-            {
-                <div class="alert alert-danger">
-                    <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
+    <div class="col-md-4 col-md-offset-4">
+
+        <div class="login-logo" id="app-name"></div>
+
+        <div class="register-box-body">
+
+            <form class="register-form" action="@Url.Action("Register")" method="post">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        @if (@ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger">
+
+                                <i class="fa fa-warning"></i> @ViewBag.ErrorMessage
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-12">
+
+                        @Html.AntiForgeryToken()
+
+
+                        @if (ViewBag.IsMultiTenancyEnabled)
+                        {
+                            if (Model.TenancyName.IsNullOrEmpty())
+                            {
+                                <div class="form-group">
+
+                                    <label class="control-label">@L("TenancyName")</label>
+
+                                    <input class="form-control" type="text" placeholder="@L("TenancyName")" name="TenancyName" value="@(Model.TenancyName ?? string.Empty)" required maxlength="@AbpTenantBase.MaxTenancyNameLength"/>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" name="TenancyName" value="@Model.TenancyName"/>
+                            }
+                        }
+
+
+                        <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()"/>
+
+                        <div class="form-group">
+
+                            <label class="control-label">@L("Name")</label>
+
+                            <input class="form-control" type="text" placeholder="@L("Name")" name="Name" required value="@Model.Name" maxlength="@WIMI.BTL.Authorization.Users.User.MaxNameLength"/>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label">@L("Surname")</label>
+
+                            <input class="form-control" type="text" placeholder="@L("Surname")" name="Surname" required value="@Model.Surname" maxlength="@WIMI.BTL.Authorization.Users.User.MaxSurnameLength"/>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="control-label">@L("EmailAddress")</label>
+
+                            <input class="form-control" type="email" placeholder="@L("EmailAddress")" name="EmailAddress" required value="@Model.EmailAddress" maxlength="@AbpUserBase.MaxEmailAddressLength"/>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+
+                        @if (!Model.IsExternalLogin)
+                        {
+                            <div class="form-group">
+
+                                <label class="control-label">@L("UserName")</label>
+
+                                <input class="form-control" type="text" autocomplete="off" placeholder="@L("UserName")" name="UserName" value="@Model.UserName" required maxlength="@AbpUserBase.MaxUserNameLength"/>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label">@L("Password")</label>
+
+                                <input class="form-control" type="password" autocomplete="off" id="RegisterPassword" placeholder="@L("Password")" name="Password" required maxlength="@WIMI.BTL.Authorization.Users.User.MaxPlainPasswordLength" minlength="@WIMI.BTL.Authorization.Users.User.MinPlainPasswordLength"/>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label">@L("PasswordRepeat")</label>
+
+                                <input class="form-control" type="password" autocomplete="off" placeholder="@L("PasswordRepeat")" name="PasswordRepeat" required maxlength="@WIMI.BTL.Authorization.Users.User.MaxPlainPasswordLength" minlength="@WIMI.BTL.Authorization.Users.User.MinPlainPasswordLength"/>
+
+                            </div>
+                        }
+
+
+                        @if (ViewBag.UseCaptcha)
+                        {
+                            <div class="form-group">
+
+                                <label class="control-label">验证码</label>
+
+                                @Html.MathCaptcha("~/Views/Account/_Captcha.cshtml")
+                            </div>
+                        }
+
+
+                        <div class="form-actions text-right">
+
+                            <a href="@Url.Action("Login", "Account")">
+                                <button type="button" id="register-back-btn" class="btn btn-default">@L("Back")</button>
+                            </a>
+
+                            <button type="submit" id="register-submit-btn" class="btn btn-success uppercase">@L("Submit")</button>
+
+                        </div>
+
+                    </div>
+
                 </div>
-            }
 
-            <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()" />
-            <input type="hidden" name="ExternalLoginAuthSchema" value="@Model.ExternalLoginAuthSchema" />
+            </form>
 
-            <div class="form-group form-float">
-                <div class="form-line">
-                    <input type="text" class="form-control" name="Name" value="@Model.Name" required maxlength="@AbpUserBase.MaxNameLength">
-                    <label class="form-label">@L("Name")</label>
-                </div>
-            </div>
+        </div>
 
-            <div class="form-group form-float">
-                <div class="form-line">
-                    <input type="text" class="form-control" name="Surname" value="@Model.Surname" required maxlength="@AbpUserBase.MaxSurnameLength">
-                    <label class="form-label">@L("Surname")</label>
-                </div>
-            </div>
-
-            <div class="form-group form-float">
-                <div class="form-line">
-                    <input type="email" class="form-control" name="EmailAddress" value="@Model.EmailAddress" required maxlength="@AbpUserBase.MaxEmailAddressLength">
-                    <label class="form-label">@L("EmailAddress")</label>
-                </div>
-            </div>
-
-            <div class="form-group form-float">
-                <div class="form-line">
-                    <input type="text" class="form-control" name="UserName" value="@Model.UserName" required maxlength="@AbpUserBase.MaxUserNameLength">
-                    <label class="form-label">@L("UserName")</label>
-                </div>
-            </div>
-
-            <div class="form-group form-float">
-                <div class="form-line">
-                    <input type="password" class="form-control" name="Password" required maxlength="@AbpUserBase.MaxPlainPasswordLength">
-                    <label class="form-label">@L("Password")</label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <a href="@Url.Action("Login", "Account")" cl class="btn btn-default waves-effect">@L("Back")</a>
-                    <button id="RegisterButton" class="btn bg-pink waves-effect" type="submit">@L("Register")</button>
-                </div>
-            </div>
-        </form>
     </div>
+
 </div>

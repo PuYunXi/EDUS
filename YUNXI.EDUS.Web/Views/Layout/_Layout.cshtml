@@ -1,0 +1,178 @@
+﻿@using System.Threading
+@using System.Web.Optimization
+@using Abp.Extensions
+@using Abp.Timing
+@using Abp.Web.Mvc.Extensions
+@using WIMI.BTL
+@using WIMI.BTL.Web.Bundling
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="app"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="app"> <![endif]-->
+<!--[if !IE]><!-->
+@{
+    SetAntiForgeryCookie();
+}
+<html>
+
+<!--<![endif]-->
+
+<head>
+
+    <title></title>
+
+    <meta charset="utf-8"/>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <meta content="智能制造,工业4.0" name="description"/>
+
+    <meta content="WIMI Software" name="author"/>
+
+    <meta name="format-detection" content="telephone=no"/>
+
+    <link id="shortcutIcon" rel="shortcut icon"/>
+
+
+    @Styles.Render("~/Content/css/bundle")
+
+
+    @RenderSection("Styles", false)
+
+    @Html.IncludeStyle("~/Views/Layout/layout.css")
+
+
+    <script type="text/javascript">
+        @* This is used to get the application's root path from javascript.
+        It's useful if you're running application in a virtual directory under IIS. *@
+        var abp = abp || {};
+        abp.appPath = '@ApplicationPath';
+        abp.appAPIPath = abp.appPath + "api/services/app/";
+    </script>
+
+</head>
+
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+
+<body class="hold-transition sidebar-mini skin-blue @Session["sidebar-collapse"]">
+
+<div class="wrapper">
+
+    <header class="main-header">
+        @Html.Action("Header", "Layout")
+    </header>
+
+
+    <aside class="main-sidebar">
+        @Html.Action("Sidebar", "Layout", new { currentPageName = ViewBag.CurrentPageName })
+    </aside>
+
+
+    <div class="content-wrapper">
+
+        @RenderBody()
+    </div>
+
+
+    <footer class="main-footer">
+        @Html.Action("Footer", "Layout")
+    </footer>
+
+
+</div>
+
+<!--[if lt IE 9]>
+
+    <script src="~/Scripts/others/respond.min.js"></script>
+
+    <script src="~/Scripts/others/html5shiv.js"></script>
+
+    <script src="~/Scripts/others/excanvas.min.js"></script>
+
+<![endif]-->
+
+<script src="~/Scripts/vue.js"></script>
+
+<script src="~/Scripts/wimi.js"></script>
+
+@Scripts.Render("~/Bundles/Foundation/js")
+
+@Scripts.Render("~/Bundles/AbpStaff/js")
+
+<script>
+    abp.localization.defaultSourceName = '@LocalizationSourceName';
+    moment.locale('@Thread.CurrentThread.CurrentUICulture.Name.Left(2)'); //Localizing moment.js
+
+    abp.log.debug('@Thread.CurrentThread.CurrentUICulture.Name.Left(2)');
+
+</script>
+
+
+<!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+<!--
+-->
+<script src="~/api/AbpServiceProxies/GetAll"></script>
+
+<script src="~/AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
+
+
+@Scripts.Render("~/Bundles/Plugins/js")
+
+@RenderSection("Plugins", false)
+
+@Html.IncludeScript(ScriptPaths.JQueryValidationLocalization)
+
+<!-- SignalR scripts -->
+
+<script src="~/signalr/hubs"></script>
+
+@Html.IncludeScript("~/Abp/Framework/scripts/libs/abp.signalr.js")
+
+@Scripts.Render("~/Bundles/AppWimi/js")
+
+@Scripts.Render("~/Bundles/pic/js")
+
+<script type="text/javascript" src="~/Views/Layout/_Header.js"></script>
+
+
+<script type="text/javascript">
+
+    $.fn.modal.Constructor.prototype.enforceFocus = function() {}; // 解决 modal select2无法使用搜索框的bug
+
+    (function(wimi) {
+        $(function() {
+
+            var setting = abp.setting;
+
+            wimi.app.name = setting.get("App.Configuration.VersionSetting.AppName");
+            wimi.app.ico = abp.appPath + 'Content/Images/Icos/' + setting.get("App.Configuration.VersionSetting.Ico");
+
+
+            $("title").html(wimi.app.name);
+
+            var $icon = $('link[rel="shortcut icon"]');
+            $icon.attr('href', wimi.app.ico);
+
+            var $footAppName = $('#footAppName');
+            $footAppName.html(wimi.app.name);
+
+            $('.logo-lg').html(wimi.app.name);
+
+        });
+
+    })(wimi);
+
+</script>
+
+@RenderSection("Scripts", false)
+
+<span id="media-width" class="hidden"></span>
+
+</body>
+
+</html>

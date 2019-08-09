@@ -119,6 +119,9 @@
     <Reference Include="AutoMapper.Collection, Version=5.0.0.0, Culture=neutral, PublicKeyToken=e57c3f0a3d6646db, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.Collection.5.0.0\lib\net461\AutoMapper.Collection.dll</HintPath>
     </Reference>
+    <Reference Include="CaptchaMvc, Version=2.5.0.0, Culture=neutral, PublicKeyToken=fe46ad421dd3b0e6, processorArchitecture=MSIL">
+      <HintPath>..\packages\CaptchaMvc.Mvc5.1.5.0\lib\net45-full\CaptchaMvc.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
@@ -2727,23 +2730,15 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
-    <Content Include="Views\Account\Login.css">
-      <DependentUpon>Login.less</DependentUpon>
-    </Content>
+    <Content Include="Views\Account\EmailActivation.js" />
+    <Content Include="Views\Account\ForgotPassword.js" />
     <Content Include="Views\Account\Login.js" />
-    <Content Include="Views\Account\Login.min.css">
-      <DependentUpon>Login.css</DependentUpon>
-    </Content>
     <Content Include="Views\Account\Register.js" />
-    <Content Include="Views\Account\_Layout.css">
-      <DependentUpon>_Layout.less</DependentUpon>
-    </Content>
-    <Content Include="Views\Account\_Layout.min.css">
-      <DependentUpon>_Layout.css</DependentUpon>
-    </Content>
-    <Content Include="Views\Account\_TenantChange.js" />
-    <Content Include="Views\Account\_TenantChangeModal.js" />
+    <Content Include="Views\Account\ResetPassword.js" />
+    <Content Include="Views\Account\_Layout.js" />
     <Content Include="Views\Home\Index.js" />
+    <Content Include="Views\Layout\layout.css" />
+    <Content Include="Views\Layout\_Header.js" />
     <Content Include="Views\Roles\Index.js" />
     <Content Include="Views\Roles\_EditRoleModal.js" />
     <Content Include="Views\Shared\_Layout.css" />
@@ -2766,6 +2761,7 @@
     <Compile Include="App_Start\PageNames.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Auth\AuthenticationManagerExtensions.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2774,6 +2770,14 @@
     <Compile Include="Controllers\TenantsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Models\Account\EmailConfirmationViewModel.cs" />
+    <Compile Include="Models\Account\ImpersonateModel.cs" />
+    <Compile Include="Models\Account\LanguagesViewModel.cs" />
+    <Compile Include="Models\Account\ResetPasswordFormViewModel.cs" />
+    <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Account\SendEmailActivationLinkViewModel.cs" />
+    <Compile Include="Models\Account\SendPasswordResetLinkViewModel.cs" />
+    <Compile Include="Models\Account\SwitchToLinkedAccountModel.cs" />
     <Compile Include="Models\Account\TenantChangeModalViewModel.cs" />
     <Compile Include="Models\Account\TenantChangeViewModel.cs" />
     <Compile Include="Models\Common\Modals\ModalHeaderViewModel.cs" />
@@ -2795,6 +2799,8 @@
     <Compile Include="Models\Roles\RoleListViewModel.cs" />
     <Compile Include="Models\Users\EditUserModalViewModel.cs" />
     <Compile Include="Models\Users\UserListViewModel.cs" />
+    <Compile Include="MultiTenancy\ITenancyNameFinder.cs" />
+    <Compile Include="MultiTenancy\SubdomainTenancyNameFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\EDUSWebViewPageBase.cs" />
     <Compile Include="Views\UrlChecker.cs" />
@@ -2803,10 +2809,8 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Layout\_LanguageSelection.cshtml" />
-    <Content Include="Views\Layout\_SideBarNav.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Login.less" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterResult.cshtml" />
     <Content Include="Views\Account\TenantSelection.cshtml" />
@@ -2896,14 +2900,8 @@
     <Content Include="scss\_tooltippopovers.scss" />
     <Content Include="scss\_variables.scss" />
     <Content Include="scss\_waveseffect.scss" />
-    <Content Include="Views\Account\_TenantChange.cshtml" />
-    <Content Include="Views\Account\_AccountLanguages.cshtml" />
-    <Content Include="Views\Account\_Layout.less" />
-    <Content Include="Views\Account\_TenantChangeModal.cshtml" />
     <Content Include="Views\Shared\Modals\_ModalFooterWithSaveAndCancel.cshtml" />
     <Content Include="Views\Shared\Modals\_ModalHeader.cshtml" />
-    <Content Include="Views\Layout\_RightSideBar.cshtml" />
-    <Content Include="Views\Layout\_SideBarUserArea.cshtml" />
     <Content Include="Views\Users\_EditUserModal.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\_EditRoleModal.cshtml" />
@@ -2919,6 +2917,15 @@
     </None>
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Views\Account\EmailActivation.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\_Captcha.cshtml" />
+    <Content Include="Views\Account\_Languages.cshtml" />
+    <Content Include="Views\Layout\_Footer.cshtml" />
+    <Content Include="Views\Layout\_Header.cshtml" />
+    <Content Include="Views\Layout\_Layout.cshtml" />
+    <Content Include="Views\Layout\_Sidebar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

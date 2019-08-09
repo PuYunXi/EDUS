@@ -1,42 +1,72 @@
-﻿(function ($) {
+﻿var CurrentPage = function() {
 
-    if (!$) {
-        return;
-    }
+    jQuery.validator.addMethod("customUsername", function(value, element) {
+        if (value === $('input[name="EmailAddress"]').val()) {
+            return true;
+        }
 
-    $(function () {
+        return !$.validator.methods.email.apply(this, arguments);
+    }, abp.localization.localize("RegisterFormUserNameInvalidMessage"));
 
-        var $registerForm = $('#RegisterForm');
+    var handleRegister = function() {
 
-        $.validator.addMethod("customUsername", function (value, element) {
-            if (value === $registerForm.find('input[name="EmailAddress"]').val()) {
-                return true;
-            }
-
-            //Username can not be an email address (except the email address entered)
-            return !$.validator.methods.email.apply(this, arguments);
-        }, abp.localization.localize("RegisterFormUserNameInvalidMessage", "EDUS"));
-
-        $registerForm.validate({
+        $(".register-form").validate({
+            errorElement: "span", //default input error message container
+            errorClass: "help-block", // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
             rules: {
+                PasswordRepeat: {
+                    equalTo: "#RegisterPassword"
+                },
                 UserName: {
                     required: true,
                     customUsername: true
                 }
             },
 
-            highlight: function (input) {
-                $(input).parents('.form-line').addClass('error');
+            messages: {
+            
             },
 
-            unhighlight: function (input) {
-                $(input).parents('.form-line').removeClass('error');
+            invalidHandler: function(event, validator) {
+
             },
 
-            errorPlacement: function (error, element) {
-                $(element).parents('.form-group').append(error);
+            highlight: function(element) {
+                $(element).closest(".form-group").addClass("has-error");
+            },
+
+            success: function(label) {
+                label.closest(".form-group").removeClass("has-error");
+                label.remove();
+            },
+
+            errorPlacement: function(error, element) {
+                if (element.closest(".input-icon").size() === 1) {
+                    error.insertAfter(element.closest(".input-icon"));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function(form) {
+                form.submit();
             }
         });
-    });
 
-})(jQuery);
+        $(".register-form input").keypress(function(e) {
+            if (e.which === 13) {
+                if ($(".register-form").valid()) {
+                    $(".register-form").submit();
+                }
+            }
+        });
+    };
+    return {
+        init: function() {
+            handleRegister();
+        }
+    };
+
+}();
