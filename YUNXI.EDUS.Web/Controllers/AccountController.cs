@@ -1,4 +1,4 @@
-﻿namespace WIMI.BTL.Web.Controllers
+﻿namespace YUNXI.EDUS.Web.Controllers
 {
     using Abp.Authorization;
     using Abp.Authorization.Users;
@@ -42,7 +42,6 @@
     using YUNXI.EDUS.Notifications;
     using YUNXI.EDUS.Web;
     using YUNXI.EDUS.Web.Auth;
-    using YUNXI.EDUS.Web.Controllers;
     using YUNXI.EDUS.Web.Controllers.Results;
     using YUNXI.EDUS.Web.Models.Account;
     using YUNXI.EDUS.Web.MultiTenancy;
@@ -852,7 +851,7 @@
             this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             this.AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
 
-            user.LastLoginTime = Clock.Now;
+            //user.LastLoginTime = Clock.Now;
 
             // Remove the cache item to prevent re-use
             await this.cacheManager.GetSwitchToLinkedAccountCache().RemoveAsync(tokenId);

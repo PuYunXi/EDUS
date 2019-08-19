@@ -62,3 +62,4 @@ namespace YUNXI.EDUS.Web.MultiTenancy
                    + HttpContext.Current.Request.ApplicationPath;
         }
     }
+}

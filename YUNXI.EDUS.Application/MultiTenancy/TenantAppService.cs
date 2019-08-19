@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
@@ -8,12 +6,14 @@ using Abp.Extensions;
 using Abp.IdentityFramework;
 using Abp.MultiTenancy;
 using Abp.Runtime.Security;
+using Microsoft.AspNet.Identity;
+using System.Linq;
+using System.Threading.Tasks;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Authorization.Users;
 using YUNXI.EDUS.Editions;
 using YUNXI.EDUS.MultiTenancy.Dto;
-using Microsoft.AspNet.Identity;
 
 namespace YUNXI.EDUS.MultiTenancy
 {
@@ -79,7 +79,7 @@ namespace YUNXI.EDUS.MultiTenancy
                 await _roleManager.GrantAllPermissionsAsync(adminRole);
 
                 //Create admin user for the tenant
-                var adminUser = User.CreateTenantAdminUser(tenant.Id, input.AdminEmailAddress, User.DefaultPassword);
+                var adminUser = User.CreateTenantAdminUser(tenant.Id, input.AdminEmailAddress, "123qwe");
                 CheckErrors(await _userManager.CreateAsync(adminUser));
                 await CurrentUnitOfWork.SaveChangesAsync(); //To get admin user's id
 

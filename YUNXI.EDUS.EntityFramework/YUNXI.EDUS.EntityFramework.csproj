@@ -248,6 +248,10 @@
     <Compile Include="Migrations\201907220636309_Upgrated_To_ABP_4_8_0.Designer.cs">
       <DependentUpon>201907220636309_Upgrated_To_ABP_4_8_0.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908190904095_Alter_AbpUser.cs" />
+    <Compile Include="Migrations\201908190904095_Alter_AbpUser.Designer.cs">
+      <DependentUpon>201908190904095_Alter_AbpUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AbpZeroDbMigrator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SeedData\DefaultEditionsCreator.cs" />
@@ -290,6 +294,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907220636309_Upgrated_To_ABP_4_8_0.resx">
       <DependentUpon>201907220636309_Upgrated_To_ABP_4_8_0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908190904095_Alter_AbpUser.resx">
+      <DependentUpon>201908190904095_Alter_AbpUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

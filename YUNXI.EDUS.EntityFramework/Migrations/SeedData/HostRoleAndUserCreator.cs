@@ -1,13 +1,13 @@
-using System.Linq;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.MultiTenancy;
+using Microsoft.AspNet.Identity;
+using System.Linq;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Authorization.Users;
 using YUNXI.EDUS.EntityFramework;
-using Microsoft.AspNet.Identity;
 
 namespace YUNXI.EDUS.Migrations.SeedData
 {
@@ -78,7 +78,7 @@ namespace YUNXI.EDUS.Migrations.SeedData
                         Surname = "Administrator",
                         EmailAddress = "admin@aspnetboilerplate.com",
                         IsEmailConfirmed = true,
-                        Password = new PasswordHasher().HashPassword(User.DefaultPassword)
+                        Password = new PasswordHasher().HashPassword("123qwe")
                     });
 
                 adminUserForHost.SetNormalizedNames();

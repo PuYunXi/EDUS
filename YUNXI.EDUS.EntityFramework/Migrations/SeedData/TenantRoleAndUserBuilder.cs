@@ -1,8 +1,8 @@
-using System.Linq;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.MultiTenancy;
+using System.Linq;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Authorization.Users;
@@ -69,7 +69,7 @@ namespace YUNXI.EDUS.Migrations.SeedData
             var adminUser = _context.Users.FirstOrDefault(u => u.TenantId == _tenantId && u.UserName == User.AdminUserName);
             if (adminUser == null)
             {
-                adminUser = User.CreateTenantAdminUser(_tenantId, "admin@defaulttenant.com", User.DefaultPassword);
+                adminUser = User.CreateTenantAdminUser(_tenantId, "admin@defaulttenant.com", "123qwe");
                 adminUser.IsEmailConfirmed = true;
                 adminUser.IsActive = true;
 
