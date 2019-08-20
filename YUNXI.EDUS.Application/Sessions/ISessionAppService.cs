@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Abp.Application.Services;
-using YUNXI.EDUS.Sessions.Dto;
+﻿using Abp.Application.Services;
+using System.Threading.Tasks;
+using YUNXI.EDUS.AppSystem.Sessions.Dto;
 
 namespace YUNXI.EDUS.Sessions
 {
     public interface ISessionAppService : IApplicationService
     {
-        Task<GetCurrentLoginInformationsOutput> GetCurrentLoginInformations();
+        Task<GetCurrentLoginInformationsOutputDto> GetCurrentLoginInformations();
     }
 }

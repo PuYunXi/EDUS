@@ -2741,8 +2741,6 @@
     <Content Include="Views\Layout\_Header.js" />
     <Content Include="Views\Roles\Index.js" />
     <Content Include="Views\Roles\_EditRoleModal.js" />
-    <Content Include="Views\Shared\_Layout.css" />
-    <Content Include="Views\Shared\_Layout.js" />
     <Content Include="Views\Tenants\Index.js" />
     <Content Include="Views\Tenants\_EditTenantModal.js" />
     <Content Include="Views\Users\Index.js" />
@@ -2751,11 +2749,16 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\Bundling\AsIsBundleOrderer.cs" />
+    <Compile Include="App_Start\Bundling\BundleConfig.cs" />
+    <Compile Include="App_Start\Bundling\BundleExtensions.cs" />
+    <Compile Include="App_Start\Bundling\CommonBundleConfig.cs" />
+    <Compile Include="App_Start\Bundling\CssRewriteUrlWithVirtualDirectoryTransform.cs" />
+    <Compile Include="App_Start\Bundling\ScriptPaths.cs" />
+    <Compile Include="App_Start\Bundling\StylePaths.cs" />
     <Compile Include="App_Start\EDUSNavigationProvider.cs" />
     <Compile Include="App_Start\EDUSWebModule.cs" />
     <Compile Include="App_Start\PageNames.cs" />
@@ -2765,6 +2768,7 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HttpWebResponseUtility.cs" />
     <Compile Include="Controllers\Results\ChallengeResult.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\TenantsController.cs" />
@@ -2781,20 +2785,20 @@
     <Compile Include="Models\Account\TenantChangeModalViewModel.cs" />
     <Compile Include="Models\Account\TenantChangeViewModel.cs" />
     <Compile Include="Models\Common\Modals\ModalHeaderViewModel.cs" />
-    <Compile Include="Models\Layout\RightSideBarViewModel.cs" />
+    <Compile Include="Models\Languages\LanguageSelectionViewModel.cs" />
     <Compile Include="Models\Account\LoginFormViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegisterResultViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\TenantSelectionViewModel.cs" />
-    <Compile Include="Models\LanguageSelectionViewModel.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\EDUSControllerBase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Layout\SideBarNavViewModel.cs" />
-    <Compile Include="Models\Layout\SideBarUserAreaViewModel.cs" />
+    <Compile Include="Models\Layout\FooterViewModel.cs" />
+    <Compile Include="Models\Layout\HeaderViewModel.cs" />
+    <Compile Include="Models\Layout\SidebarViewModel.cs" />
     <Compile Include="Models\Roles\EditRoleModalViewModel.cs" />
     <Compile Include="Models\Roles\RoleListViewModel.cs" />
     <Compile Include="Models\Users\EditUserModalViewModel.cs" />
@@ -2809,7 +2813,6 @@
     <Content Include="Views\web.config" />
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Layout\_LanguageSelection.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterResult.cshtml" />
@@ -2900,8 +2903,6 @@
     <Content Include="scss\_tooltippopovers.scss" />
     <Content Include="scss\_variables.scss" />
     <Content Include="scss\_waveseffect.scss" />
-    <Content Include="Views\Shared\Modals\_ModalFooterWithSaveAndCancel.cshtml" />
-    <Content Include="Views\Shared\Modals\_ModalHeader.cshtml" />
     <Content Include="Views\Users\_EditUserModal.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Roles\_EditRoleModal.cshtml" />

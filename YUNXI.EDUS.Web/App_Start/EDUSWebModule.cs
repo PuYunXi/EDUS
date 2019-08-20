@@ -13,6 +13,7 @@ using YUNXI.EDUS.Api;
 using Castle.MicroKernel.Registration;
 using Hangfire;
 using Microsoft.Owin.Security;
+using YUNXI.EDUS.Web.Bundling;
 
 namespace YUNXI.EDUS.Web
 {

@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using Abp.Auditing;
+﻿using Abp.Auditing;
 using Abp.AutoMapper;
+using System.Threading.Tasks;
+using YUNXI.EDUS.AppSystem.Sessions.Dto;
 using YUNXI.EDUS.Sessions.Dto;
 
 namespace YUNXI.EDUS.Sessions
@@ -8,21 +9,22 @@ namespace YUNXI.EDUS.Sessions
     public class SessionAppService : EDUSAppServiceBase, ISessionAppService
     {
         [DisableAuditing]
-        public async Task<GetCurrentLoginInformationsOutput> GetCurrentLoginInformations()
+        public async Task<GetCurrentLoginInformationsOutputDto> GetCurrentLoginInformations()
         {
-            var output = new GetCurrentLoginInformationsOutput();
-
-            if (AbpSession.UserId.HasValue)
+            var output = new GetCurrentLoginInformationsOutputDto
             {
-                output.User = (await GetCurrentUserAsync()).MapTo<UserLoginInfoDto>();
-            }
+                User =
+                                     (await GetCurrentUserAsync())
+                                     .MapTo<UserLoginInfoDto>()
+            };
 
-            if (AbpSession.TenantId.HasValue)
+            if (this.AbpSession.TenantId.HasValue)
             {
-                output.Tenant = (await GetCurrentTenantAsync()).MapTo<TenantLoginInfoDto>();
+                output.Tenant = (await this.GetCurrentTenantAsync()).MapTo<TenantLoginInfoDto>();
             }
 
             return output;
         }
+
     }
 }

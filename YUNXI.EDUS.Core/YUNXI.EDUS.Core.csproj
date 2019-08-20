@@ -225,6 +225,7 @@
     <Compile Include="Editions\EditionManager.cs" />
     <Compile Include="EDUSDomainServiceBase.cs" />
     <Compile Include="EDUSServiceBase.cs" />
+    <Compile Include="EDUSVersionHelper.cs" />
     <Compile Include="Emailing\EmailTemplateProvider.cs" />
     <Compile Include="Emailing\IEmailTemplateProvider.cs" />
     <Compile Include="Features\FeatureValueStore.cs" />
@@ -243,6 +244,17 @@
     <Compile Include="Validation\ValidationHelper.cs" />
     <Compile Include="Web\IWebUrlService.cs" />
     <Compile Include="Web\WebUrlService.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\IYunxiEdusCoreConfiguration.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\Interface\IHasNotificationTypeItemDefinitions.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\Interface\INotificationTypeManager.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\Interface\INotificationTypeProviderContext.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\NotificationManager.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\NotificationTriggerMode.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\NotificationTypeDefinition.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\NotificationTypeProvider.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\NotificationTypes\NotificationTypeProviderContext.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\YunxiEdusCoreConfiguration.cs" />
+    <Compile Include="YunxiEdusCoreConfigurations\YunxiEdusCoreConfigurationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

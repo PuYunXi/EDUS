@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Abp.Application.Services;
+﻿using Abp.Application.Services;
 using Abp.IdentityFramework;
 using Abp.Runtime.Session;
+using Microsoft.AspNet.Identity;
+using System;
+using System.Threading.Tasks;
 using YUNXI.EDUS.Authorization.Users;
 using YUNXI.EDUS.MultiTenancy;
-using YUNXI.EDUS.Users;
-using Microsoft.AspNet.Identity;
 
 namespace YUNXI.EDUS
 {
@@ -24,17 +23,16 @@ namespace YUNXI.EDUS
             LocalizationSourceName = EDUSConsts.LocalizationSourceName;
         }
 
-        protected virtual async Task<User> GetCurrentUserAsync()
+        protected virtual Task<User> GetCurrentUserAsync()
         {
-            var user = await UserManager.FindByIdAsync(AbpSession.GetUserId());
+            var user = this.UserManager.FindByIdAsync(this.AbpSession.GetUserId());
             if (user == null)
             {
-                throw new ApplicationException("There is no current user!");
+                throw new ApplicationException(this.L("ThereIsNoCurrentUser"));
             }
 
             return user;
         }
-
         protected virtual Task<Tenant> GetCurrentTenantAsync()
         {
             return TenantManager.GetByIdAsync(AbpSession.GetTenantId());

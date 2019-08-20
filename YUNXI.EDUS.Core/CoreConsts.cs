@@ -13,5 +13,12 @@
         ///     普通文本长度
         /// </summary>
         public const int MaxLength = 40;
+
+        /// <summary>
+        ///     IP地址长度
+        /// </summary>
+        public const int IPAdressLength = 15;
+
+        public const string NotificationTypesName = "NotificationTypes";
     }
 }

@@ -12,6 +12,8 @@ namespace YUNXI.EDUS.Web
     /// </summary>
     public class EDUSNavigationProvider : NavigationProvider
     {
+        public const string MenuName = "Mpa";
+
         public override void SetNavigation(INavigationProviderContext context)
         {
             context.Manager.MainMenu

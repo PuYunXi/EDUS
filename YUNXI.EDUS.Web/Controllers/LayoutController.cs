@@ -1,60 +1,80 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using Abp.Application.Navigation;
-using Abp.Configuration;
+﻿using Abp.Application.Navigation;
 using Abp.Configuration.Startup;
 using Abp.Localization;
 using Abp.Runtime.Session;
 using Abp.Threading;
-using YUNXI.EDUS.Configuration;
-using YUNXI.EDUS.Configuration.Ui;
+using Abp.Web.Mvc.Authorization;
+using System.Diagnostics;
+using System.Net;
+using System.Text;
+using System.Web.Mvc;
 using YUNXI.EDUS.Sessions;
-using YUNXI.EDUS.Web.Models;
+using YUNXI.EDUS.Web.Models.Languages;
 using YUNXI.EDUS.Web.Models.Layout;
 
 namespace YUNXI.EDUS.Web.Controllers
 {
+    [AbpMvcAuthorize]
     public class LayoutController : EDUSControllerBase
     {
-        private readonly IUserNavigationManager _userNavigationManager;
-        private readonly ISessionAppService _sessionAppService;
-        private readonly IMultiTenancyConfig _multiTenancyConfig;
-        private readonly ILanguageManager _languageManager;
+        private readonly ILanguageManager languageManager;
+
+        private readonly IMultiTenancyConfig multiTenancyConfig;
+
+        private readonly ISessionAppService sessionAppService;
+
+        private readonly IUserNavigationManager userNavigationManager;
 
         public LayoutController(
-            IUserNavigationManager userNavigationManager,
             ISessionAppService sessionAppService,
+            IUserNavigationManager userNavigationManager,
             IMultiTenancyConfig multiTenancyConfig,
             ILanguageManager languageManager)
         {
-            _userNavigationManager = userNavigationManager;
-            _sessionAppService = sessionAppService;
-            _multiTenancyConfig = multiTenancyConfig;
-            _languageManager = languageManager;
+            this.sessionAppService = sessionAppService;
+            this.userNavigationManager = userNavigationManager;
+            this.multiTenancyConfig = multiTenancyConfig;
+            this.languageManager = languageManager;
         }
 
         [ChildActionOnly]
-        public PartialViewResult SideBarNav(string activeMenu = "")
+        public PartialViewResult Footer()
         {
-            var model = new SideBarNavViewModel
+            var footerModel = new FooterViewModel
             {
-                MainMenu = AsyncHelper.RunSync(() => _userNavigationManager.GetMenuAsync("MainMenu", AbpSession.ToUserIdentifier())),
-                ActiveMenuItemName = activeMenu
+                LoginInformations =
+                                          AsyncHelper.RunSync(
+                                              () =>
+                                              this.sessionAppService.GetCurrentLoginInformations())
             };
 
-            return PartialView("_SideBarNav", model);
+            return this.PartialView("_Footer", footerModel);
         }
 
-        [ChildActionOnly]
-        public PartialViewResult SideBarUserArea()
+        public ActionResult GetSentinelLdkFeatures()
         {
-            var model = new SideBarUserAreaViewModel
-            {
-                LoginInformations = AsyncHelper.RunSync(() => _sessionAppService.GetCurrentLoginInformations()),
-                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled,
-            };
+            var url =
+                @"http://localhost:1947/_int_/tab_feat.html?haspid=0&featureid=-1&vendorid=0&productid=0&filterfrom=1&filterto=10";
 
-            return PartialView("_SideBarUserArea", model);
+            HttpWebResponse response;
+
+            try
+            {
+                response = HttpWebResponseUtility.CreateGetHttpResponse(url, 600, null, null);
+
+                var respStream = response.GetResponseStream();
+
+                Debug.Assert(respStream != null, "respStream != null");
+                using (var reader = new System.IO.StreamReader(respStream, Encoding.UTF8))
+                {
+                    var responseText = reader.ReadToEnd();
+                    return this.Content(responseText);
+                }
+            }
+            catch
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
 
         [ChildActionOnly]
@@ -62,24 +82,50 @@ namespace YUNXI.EDUS.Web.Controllers
         {
             var model = new LanguageSelectionViewModel
             {
-                CurrentLanguage = _languageManager.CurrentLanguage,
-                Languages = _languageManager.GetLanguages()
+                CurrentLanguage = languageManager.CurrentLanguage,
+                Languages = languageManager.GetLanguages()
             };
 
             return PartialView("_LanguageSelection", model);
         }
 
         [ChildActionOnly]
-        public PartialViewResult RightSideBar()
+        public PartialViewResult Header()
         {
-            var themeName = SettingManager.GetSettingValue(AppSettingNames.UiTheme);
-
-            var viewModel = new RightSideBarViewModel
+            var headerModel = new HeaderViewModel
             {
-                CurrentTheme = UiThemes.All.FirstOrDefault(t => t.CssClass == themeName)
+                LoginInformations =
+                                          AsyncHelper.RunSync(
+                                              () =>
+                                              this.sessionAppService.GetCurrentLoginInformations()),
+                Languages = this.languageManager.GetLanguages(),
+                CurrentLanguage = this.languageManager.CurrentLanguage,
+                IsMultiTenancyEnabled = this.multiTenancyConfig.IsEnabled,
+                IsImpersonatedLogin = this.AbpSession.ImpersonatorUserId.HasValue
+            };
+            return this.PartialView("_Header", headerModel);
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult Sidebar(string currentPageName = "")
+        {
+            var sidebarModel = new SidebarViewModel
+            {
+                Menu =
+                                           AsyncHelper.RunSync(
+                                               () =>
+                                               this.userNavigationManager.GetMenuAsync(
+                                                   EDUSNavigationProvider.MenuName,
+                                                   this.AbpSession.ToUserIdentifier())),
+                CurrentPageName = currentPageName
             };
 
-            return PartialView("_RightSideBar", viewModel);
+            return this.PartialView("_Sidebar", sidebarModel);
+        }
+
+        public void ToggleSidebarCollapse()
+        {
+            this.Session["sidebar-collapse"] = this.Session["sidebar-collapse"] == null ? "sidebar-collapse" : null;
         }
     }
 }
