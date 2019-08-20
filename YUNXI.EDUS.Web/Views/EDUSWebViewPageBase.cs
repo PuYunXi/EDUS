@@ -1,4 +1,5 @@
 ﻿using Abp.Web.Mvc.Views;
+using System.Diagnostics.CodeAnalysis;
 
 namespace YUNXI.EDUS.Web.Views
 {
@@ -7,11 +8,12 @@ namespace YUNXI.EDUS.Web.Views
 
     }
 
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public abstract class EDUSWebViewPageBase<TModel> : AbpWebViewPage<TModel>
     {
         protected EDUSWebViewPageBase()
         {
-            LocalizationSourceName = EDUSConsts.LocalizationSourceName;
+            LocalizationSourceName = CoreConsts.LocalizationSourceName;
         }
     }
 }

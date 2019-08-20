@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Abp.Localization;
+using System.Collections.Generic;
 using System.Linq;
-using Abp.Localization;
 using YUNXI.EDUS.EntityFramework;
 
 namespace YUNXI.EDUS.Migrations.SeedData
@@ -15,16 +15,16 @@ namespace YUNXI.EDUS.Migrations.SeedData
         {
             InitialLanguages = new List<ApplicationLanguage>
             {
-                new ApplicationLanguage(null, "en", "English", "famfamfam-flags gb"),
-                new ApplicationLanguage(null, "tr", "Türkçe", "famfamfam-flags tr"),
-                new ApplicationLanguage(null, "zh-CN", "简体中文", "famfamfam-flags cn"),
-                new ApplicationLanguage(null, "pt-BR", "Português-BR", "famfamfam-flags br"),
-                new ApplicationLanguage(null, "es", "Español", "famfamfam-flags es"),
-                new ApplicationLanguage(null, "fr", "Français", "famfamfam-flags fr"),
-                new ApplicationLanguage(null, "it", "Italiano", "famfamfam-flags it"),
-                new ApplicationLanguage(null, "ja", "日本語", "famfamfam-flags jp"),
-                new ApplicationLanguage(null, "nl-NL", "Nederlands", "famfamfam-flags nl"),
-                new ApplicationLanguage(null, "lt", "Lietuvos", "famfamfam-flags lt")
+                //new ApplicationLanguage(null, "en", "English", "famfamfam-flags gb"),
+                //new ApplicationLanguage(null, "tr", "Türkçe", "famfamfam-flags tr"),
+                new ApplicationLanguage(null, "zh-CN", "简体中文", "famfamfam-flags cn")
+                //new ApplicationLanguage(null, "pt-BR", "Português-BR", "famfamfam-flags br"),
+                //new ApplicationLanguage(null, "es", "Español", "famfamfam-flags es"),
+                //new ApplicationLanguage(null, "fr", "Français", "famfamfam-flags fr"),
+                //new ApplicationLanguage(null, "it", "Italiano", "famfamfam-flags it"),
+                //new ApplicationLanguage(null, "ja", "日本語", "famfamfam-flags jp"),
+                //new ApplicationLanguage(null, "nl-NL", "Nederlands", "famfamfam-flags nl"),
+                //new ApplicationLanguage(null, "lt", "Lietuvos", "famfamfam-flags lt")
             };
         }
 

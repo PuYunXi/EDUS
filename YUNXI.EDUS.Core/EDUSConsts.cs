@@ -2,7 +2,7 @@
 {
     public class EDUSConsts
     {
-        public const string LocalizationSourceName = "EDUS";
+        public const string LocalizationSourceName = "Language";
 
         public const bool MultiTenancyEnabled = true;
     }

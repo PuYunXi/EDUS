@@ -1,16 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
+﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Abp.Application.Services;
-using Abp.Application.Services.Dto;
-using Abp.Dependency;
-using Abp.Events.Bus.Exceptions;
-using Abp.Events.Bus.Handlers;
-using Abp.UI;
-using Abp.Web.Mvc.Authorization;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Users;
@@ -18,7 +9,7 @@ using YUNXI.EDUS.Web.Models.Users;
 
 namespace YUNXI.EDUS.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Users)]
+    [AbpAuthorize(PermissionNames.Pages_Administration_Users)]
     public class UsersController : EDUSControllerBase
     {
         private readonly IUserAppService _userAppService;

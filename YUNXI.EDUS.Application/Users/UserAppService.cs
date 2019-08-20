@@ -1,23 +1,23 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.IdentityFramework;
+using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Authorization.Users;
 using YUNXI.EDUS.Roles.Dto;
 using YUNXI.EDUS.Users.Dto;
-using Microsoft.AspNet.Identity;
 
 namespace YUNXI.EDUS.Users
 {
-    [AbpAuthorize(PermissionNames.Pages_Users)]
+    [AbpAuthorize(PermissionNames.Pages_Administration_Users)]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedResultRequestDto, CreateUserDto, UpdateUserDto>, IUserAppService
     {
         private readonly UserManager _userManager;

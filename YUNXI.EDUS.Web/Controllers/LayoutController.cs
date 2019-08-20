@@ -109,16 +109,13 @@ namespace YUNXI.EDUS.Web.Controllers
         [ChildActionOnly]
         public PartialViewResult Sidebar(string currentPageName = "")
         {
-            var sidebarModel = new SidebarViewModel
-            {
-                Menu =
-                                           AsyncHelper.RunSync(
-                                               () =>
-                                               this.userNavigationManager.GetMenuAsync(
-                                                   EDUSNavigationProvider.MenuName,
-                                                   this.AbpSession.ToUserIdentifier())),
-                CurrentPageName = currentPageName
-            };
+            var sidebarModel = new SidebarViewModel();
+
+            var userMenu = AsyncHelper.RunSync(() => this.userNavigationManager.GetMenuAsync(EDUSNavigationProvider.MenuName, this.AbpSession.ToUserIdentifier()));
+
+            sidebarModel.Menu = userMenu;
+            sidebarModel.CurrentPageName = currentPageName;
+
 
             return this.PartialView("_Sidebar", sidebarModel);
         }

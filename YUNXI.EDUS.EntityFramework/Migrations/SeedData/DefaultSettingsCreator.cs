@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Abp.Configuration;
+﻿using Abp.Configuration;
 using Abp.Localization;
 using Abp.Net.Mail;
+using System.Linq;
 using YUNXI.EDUS.EntityFramework;
 
 namespace YUNXI.EDUS.Migrations.SeedData
@@ -22,7 +22,8 @@ namespace YUNXI.EDUS.Migrations.SeedData
             AddSettingIfNotExists(EmailSettingNames.DefaultFromDisplayName, "mydomain.com mailer");
 
             //Languages
-            AddSettingIfNotExists(LocalizationSettingNames.DefaultLanguage, "en");
+          //  AddSettingIfNotExists(LocalizationSettingNames.DefaultLanguage, "en");
+            this.AddSettingIfNotExists(LocalizationSettingNames.DefaultLanguage, "zh-CN");
         }
 
         private void AddSettingIfNotExists(string name, string value, int? tenantId = null)

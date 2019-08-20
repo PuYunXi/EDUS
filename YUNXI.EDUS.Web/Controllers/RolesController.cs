@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using System.Web.Mvc;
-using Abp.Application.Services.Dto;
+﻿using Abp.Application.Services.Dto;
 using Abp.Web.Mvc.Authorization;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Roles;
 using YUNXI.EDUS.Web.Models.Roles;
 
 namespace YUNXI.EDUS.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Roles)]
+    [AbpMvcAuthorize(PermissionNames.Pages_Administration_Roles)]
     public class RolesController : EDUSControllerBase
     {
         private readonly IRoleAppService _roleAppService;

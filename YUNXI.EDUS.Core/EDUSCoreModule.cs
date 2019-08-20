@@ -1,9 +1,12 @@
-﻿using System.Reflection;
+﻿using Abp.IO;
 using Abp.Localization.Dictionaries;
 using Abp.Localization.Dictionaries.Xml;
+using Abp.Localization.Sources;
 using Abp.Modules;
 using Abp.Zero;
 using Abp.Zero.Configuration;
+using System.Reflection;
+using System.Web;
 using YUNXI.EDUS.Authorization;
 using YUNXI.EDUS.Authorization.Roles;
 using YUNXI.EDUS.Authorization.Users;
@@ -27,16 +30,26 @@ namespace YUNXI.EDUS
             //Remove the following line to disable multi-tenancy.
             Configuration.MultiTenancy.IsEnabled = EDUSConsts.MultiTenancyEnabled;
 
+            if (HttpContext.Current != null)
+            {
+                var langugePath = HttpContext.Current.Server.MapPath("~/Language");
+                DirectoryHelper.CreateIfNotExists(langugePath);
+
+                this.Configuration.Localization.Sources.Extensions.Add(new LocalizationSourceExtensionInfo("Language",
+                    new XmlFileLocalizationDictionaryProvider(langugePath)));
+            }
+
+
+
             //Add/remove localization sources here
-            Configuration.Localization.Sources.Add(
-                new DictionaryBasedLocalizationSource(
-                    EDUSConsts.LocalizationSourceName,
-                    new XmlEmbeddedFileLocalizationDictionaryProvider(
-                        Assembly.GetExecutingAssembly(),
-                        "YUNXI.EDUS.Localization.Source"
-                        )
-                    )
-                );
+            this.Configuration.Localization.Sources.Add(
+      new DictionaryBasedLocalizationSource(
+          "Language",
+          new XmlEmbeddedFileLocalizationDictionaryProvider(
+              Assembly.GetExecutingAssembly(),
+                        "YUNXI.EDUS.Localization.Source")));
+
+
 
             AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
 
